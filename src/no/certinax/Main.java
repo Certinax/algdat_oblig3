@@ -25,7 +25,16 @@ public class Main {
             int[] a = {1,7,1,6,1,5,1,4,1,1,1,3};
             for (int verdi : a) tre.leggInn(verdi);
 
-            System.out.println(tre.antall(1));
+            //System.out.println(tre.antall(1));
+
+
+            ObligSBinTre<Integer> fire = new ObligSBinTre<>(Comparator.naturalOrder());
+            int[] b = {3,1,2,5};
+            for (int verdi : b) fire.leggInn(verdi);
+
+            fire.inorden();
+            //System.out.println(fire.inorden());
+            //System.out.println(fire);
         }
     }
 }
