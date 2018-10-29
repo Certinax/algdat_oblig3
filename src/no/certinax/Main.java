@@ -1,6 +1,8 @@
 package no.certinax;
 
 import java.util.Comparator;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
@@ -27,14 +29,35 @@ public class Main {
 
             //System.out.println(tre.antall(1));
 
+            int n = 10000000;
 
             ObligSBinTre<Integer> fire = new ObligSBinTre<>(Comparator.naturalOrder());
-            int[] b = {3,1,2,5};
-            for (int verdi : b) fire.leggInn(verdi);
+            int[] b = {4,7,2,9,4,10,8,7,4,6,1};
 
-            fire.inorden();
+            /*ThreadLocalRandom random = ThreadLocalRandom.current();
+            for(int i = 50; i < b.length; i--)
+                b[i] = random.nextInt(0,1000);*/
+
+            for (int verdi : b)
+                fire.leggInn(verdi);
+
+            //fire.nesteInorden();
             //System.out.println(fire.inorden());
-            //System.out.println(fire);
+            ///System.out.println(fire);
+            //System.out.println(fire.omvendtString());
+
+            System.out.println(fire);
+            fire.fjern(4);
+            System.out.println(fire);
+            fire.fjernAlle(7);
+            System.out.println(fire);
+            fire.nullstill();
+            System.out.println(fire);
+
+            //long tic = System.currentTimeMillis();
+            //fire.omvendtString();
+            //long tac = System.currentTimeMillis() - tic;
+            //System.out.println(tac + " ms.");
         }
     }
 }
