@@ -324,8 +324,7 @@ public class ObligSBinTre<T> implements Beholder<T>
         /**
          * Fra Venstreside
          */
-
-
+        
         StringJoiner s = new StringJoiner(", ", "[", "]");
         ArrayDeque<Node<T>> lengsteGren = new ArrayDeque<>();
         ArrayDeque<Node<T>> nestLengstGren = new ArrayDeque<>();
@@ -437,7 +436,6 @@ public class ObligSBinTre<T> implements Beholder<T>
                 gren.addLast(p);
             }
         }
-
 
         grener[i++] = gren.toString();
 
