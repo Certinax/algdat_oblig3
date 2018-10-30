@@ -46,18 +46,32 @@ public class Main {
             ///System.out.println(fire);
             //System.out.println(fire.omvendtString());
 
-            System.out.println(fire);
-            fire.fjern(4);
-            System.out.println(fire);
-            fire.fjernAlle(7);
-            System.out.println(fire);
-            fire.nullstill();
-            System.out.println(fire);
+            //System.out.println("Hele treet: " + fire);
+            //System.out.println("Høyre gren: " + fire.høyreGren());;
+            //fire.fjern(4);
+            //System.out.println(fire);
+            //fire.fjernAlle(7);
+            //System.out.println(fire);
+
+            //fire.nullstill();
+            //System.out.println(fire);
+
 
             //long tic = System.currentTimeMillis();
             //fire.omvendtString();
             //long tac = System.currentTimeMillis() - tic;
             //System.out.println(tac + " ms.");
+        }
+
+        {
+
+            ObligSBinTre<Character> fem = new ObligSBinTre<>(Comparator.naturalOrder());
+            char[] verdier = "IATBHJCRSOFELKGDMPQN".toCharArray();
+            for (char c : verdier) fem.leggInn(c);
+
+            //System.out.println(fem);
+            System.out.println(fem.høyreGren());
+            System.out.println(fem.lengstGren());
         }
     }
 }
