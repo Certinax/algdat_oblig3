@@ -1,5 +1,6 @@
 package no.certinax;
 
+import java.sql.SQLOutput;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -62,7 +63,7 @@ public class Main {
             //long tac = System.currentTimeMillis() - tic;
             //System.out.println(tac + " ms.");
         }
-
+        /*
         {
 
             ObligSBinTre<Character> fem = new ObligSBinTre<>(Comparator.naturalOrder());
@@ -72,6 +73,21 @@ public class Main {
             //System.out.println(fem);
             System.out.println(fem.høyreGren());
             System.out.println(fem.lengstGren());
+        }
+        */
+
+        {
+            ObligSBinTre<Character> tre = new ObligSBinTre<>(Comparator.naturalOrder()); char[] verdier = "IATBHJCRSOFELKGDMPQN".toCharArray();
+            for (char c : verdier) tre.leggInn(c);
+            System.out.println(tre.høyreGren() + " " + tre.lengstGren());
+
+
+            //tre.grener();
+
+            System.out.println("Oppgaveutkjøring");
+
+            String[] s = tre.grener();
+            for (String gren : s) System.out.println(gren);
         }
     }
 }
