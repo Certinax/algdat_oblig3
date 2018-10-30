@@ -314,129 +314,12 @@ public class ObligSBinTre<T> implements Beholder<T>
                 }
             }
         }
-
-        /**
-         * Fra Venstreside
-         */
-        /*
-        int antall = 0;
-        p = rot;
-        antall++;
-        // finner node lengst til venstre (altså første inorden)
-        while(p.venstre != null) {
-            p = p.venstre;
-            antall++;
-        }
-
-        // finne første bladnode
-        while(p.høyre != null) {
-            p = p.høyre;
-            antall++;
-            while(p.venstre != null) {
-                p = p.venstre;
-                antall++;
-            }
-        }
-        System.out.println(p.verdi);
-        System.out.println("Gren til første bladnode har " + antall + " noder i seg.");
-
-
-        // finne neste bladnode
-        while(p.forelder != null) {
-            if(p == p.forelder.venstre) // sjekker om bladnode er venstrebarn
-            {
-                if(p.forelder.høyre != null) // må sjekke om det eksisterer et høyrebarn til p sin forelder
-                {
-                    p = p.forelder;
-                    antall--;
-                    while(p.høyre != null) {
-                        p = p.høyre;
-                        antall++;
-                        while(p.venstre != null) {
-                            p = p.venstre;
-                            antall++;
-                        }
-                    }
-                    //if(p.venstre == null) {
-                        System.out.println("Endepunkter: " + p.verdi + " og har " + antall + " noder");
-                    //}
-                }
-                else // p sin forelder har ikke høyrebarn
-                {
-                    p = p.forelder;
-                    antall--;
-                }
-            }
-            else // p er høyrebarn
-            {
-                // må gå oppover i treet for å finne en forelder som er et venstrebarn
-                p = p.forelder;
-                antall--;
-            }
-        }*/
-        //System.out.println(p.verdi);
-
-
         return s.toString();
     }
 
     public String lengstGren()
     {
         if(tom()) return "[]";
-
-        /*Node<T> p = rot;
-
-        ArrayDeque<Node<T>> lengsteGren = new ArrayDeque<>();
-        ArrayDeque<Node<T>> nestLengstGren = new ArrayDeque<>();
-        int største = 0;
-
-        StringJoiner s = new StringJoiner(", ", "[", "]");
-
-        lengsteGren.addFirst(p);
-        største++;
-
-        // Høyre gren med antall noder
-        while(p.høyre != null) {
-            p = p.høyre;
-            lengsteGren.addFirst(p);
-            største++;
-            if(p.høyre == null) {
-                if(p.venstre != null) {
-                    p = p.venstre;
-                    lengsteGren.addFirst(p);
-                    største++;
-                }
-            }
-        }
-
-        // p = node lengst til høyre
-        // 1) Må sjekke om p sin forelder har venstre barn
-        while(p.forelder != null) {
-            if (p.forelder.høyre == p) {
-                lengsteGren.removeFirst();
-                p = p.forelder;
-                største--;
-                while (p.venstre != null) {
-                    p = p.venstre;
-                    lengsteGren.addFirst(p);
-                    største++;
-                    while (p.høyre != null) {
-                        p = p.høyre;
-                        lengsteGren.addFirst(p);
-                        største++;
-                    }
-                }
-            } else {
-                if(p.venstre ==  null && p.høyre == null) {
-                    System.out.println("høyreside ferdig");
-                }
-                p = rot;
-            }
-        }
-
-        while(!lengsteGren.isEmpty()) {
-            s.add(lengsteGren.removeLast().toString());
-        }*/
 
         /**
          * Fra Venstreside
@@ -471,10 +354,6 @@ public class ObligSBinTre<T> implements Beholder<T>
                 lengsteGren.addFirst(p);
             }
         }
-        //System.out.println(p.verdi);
-        //System.out.println("Gren til første bladnode har " + antall + " noder i seg. Og har verdien "+ p.verdi);
-        //System.out.println(lengsteGren.size());
-
 
         // Kopiere lengsteGrenDeque over til nestelengst
         nestLengstGren = lengsteGren.clone();
@@ -498,9 +377,7 @@ public class ObligSBinTre<T> implements Beholder<T>
                             nestLengstGren.addFirst(p);
                         }
                     }
-                    //if(p.venstre == null) {
-                    //System.out.println("Endepunkter: " + p.verdi + " og har " + antall + " noder");
-                    //}
+                    // Sjekker her om nåværende gren er lengre enn den lengste
                     if(nestLengstGren.size() > lengsteGren.size()) {
                         lengsteGren = nestLengstGren.clone();
                     }
@@ -524,12 +401,6 @@ public class ObligSBinTre<T> implements Beholder<T>
         while(!lengsteGren.isEmpty()) {
             s.add(lengsteGren.removeLast().toString());
         }
-
-        /*System.out.println("Skriver ut nest lengste");
-        while(!nestLengstGren.isEmpty()) {
-            System.out.print(nestLengstGren.removeLast().toString());
-        }
-        System.out.println();*/
 
         return s.toString();
     }
