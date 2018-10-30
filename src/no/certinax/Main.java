@@ -77,17 +77,21 @@ public class Main {
         */
 
         {
-            ObligSBinTre<Character> tre = new ObligSBinTre<>(Comparator.naturalOrder()); char[] verdier = "IATBHJCRSOFELKGDMPQN".toCharArray();
+            ObligSBinTre<Character> tre = new ObligSBinTre<>(Comparator.naturalOrder());
+            char[] verdier = "IATBHJCRSOFELKGDMPQN".toCharArray();
             for (char c : verdier) tre.leggInn(c);
             System.out.println(tre.høyreGren() + " " + tre.lengstGren());
 
 
             //tre.grener();
 
-            System.out.println("Oppgaveutkjøring");
+            //System.out.println("Oppgaveutkjøring");
 
-            String[] s = tre.grener();
-            for (String gren : s) System.out.println(gren);
+            //String[] s = tre.grener();
+            //for (String gren : s) System.out.println(gren);
+
+
+            System.out.println(tre.bladnodeverdier());
         }
     }
 }

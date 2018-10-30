@@ -324,7 +324,7 @@ public class ObligSBinTre<T> implements Beholder<T>
         /**
          * Fra Venstreside
          */
-        
+
         StringJoiner s = new StringJoiner(", ", "[", "]");
         ArrayDeque<Node<T>> lengsteGren = new ArrayDeque<>();
         ArrayDeque<Node<T>> nestLengstGren = new ArrayDeque<>();
@@ -488,9 +488,28 @@ public class ObligSBinTre<T> implements Beholder<T>
                 (p.høyre == null ? 0 : antallBladnoder(p.høyre));
     }
 
+    private static String bladNodeVerdier(Node<?> p) {
+        //if(p.venstre == null && p.høyre == null) return p.verdi.toString();
+
+        /*if(p.venstre == null && p.høyre != null) {
+            return null;
+        } else {
+            return bladNodeVerdier(p.venstre);
+        }
+
+        if(p.høyre == null && p.venstre != null) {
+            return null;
+        } else {
+            return bladNodeVerdier(p.høyre);
+        }*/
+
+        return null;
+
+    }
+
     public String bladnodeverdier()
     {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        return rot == null ? null : bladNodeVerdier(rot);
     }
 
     public String postString()
