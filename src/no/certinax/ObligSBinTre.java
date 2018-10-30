@@ -407,62 +407,39 @@ public class ObligSBinTre<T> implements Beholder<T>
 
     public String[] grener()
     {
-        //if(tom()) return "[]";
 
-        /**
-         * Fra Venstreside
-         */
-        //System.out.println("Antall bladnoder er: " + antallBladnoder());
 
         // Finner antall bladnoder via hjelpemetode
         // Setter størrelsen til string tabellen vha antallet som blir returnert
         String[] grener = new String[antallBladnoder()];
         int i = 0;
 
-
-        StringJoiner s = new StringJoiner(", ", "[", "]");
-
         ArrayDeque<Node<T>> gren = new ArrayDeque<>();
-        ArrayDeque<Node<T>> omvendtGren;
 
 
         int antall = 0;
         Node<T> p = rot;
         if(rot == null) return grener;
-
-
-        antall++;
         gren.addLast(p);
-        s.add(p.verdi.toString());
-
-
 
         // finner node lengst til venstre (altså første inorden)
         while(p.venstre != null) {
             p = p.venstre;
-            antall++;
             gren.addLast(p);
-            s.add(p.verdi.toString());
         }
 
         // finne første bladnode
         while(p.høyre != null) {
             p = p.høyre;
-            antall++;
             gren.addLast(p);
-            s.add(p.verdi.toString());
             while(p.venstre != null) {
                 p = p.venstre;
-                antall++;
                 gren.addLast(p);
-                s.add(p.verdi.toString());
             }
         }
 
 
         grener[i++] = gren.toString();
-
-
 
         // finne neste bladnode
         while(p.forelder != null) {
@@ -471,35 +448,21 @@ public class ObligSBinTre<T> implements Beholder<T>
                 if(p.forelder.høyre != null) // må sjekke om det eksisterer et høyrebarn til p sin forelder
                 {
                     p = p.forelder;
-                    antall--;
                     gren.removeLast();
                     while(p.høyre != null) {
                         p = p.høyre;
-                        antall++;
                         gren.addLast(p);
                         while(p.venstre != null) {
                             p = p.venstre;
-                            antall++;
                             gren.addLast(p);
                         }
                     }
-                    // P er her en bladnode
-                    // Sjekker her om nåværende gren er lengre enn den lengste
-                    s = new StringJoiner(", ", "[","]");
-                    /*while(!grenkopi.isEmpty()) {
-                        s.add(grenkopi.removeLast().toString());
-                    }
-                    grener[i++] = s.toString();
-                    System.out.println(grener[2]);*/
-                    //System.out.println(gren.toString());
+                    // Legger til neste gren i string-arrayet
                     grener[i++] = gren.toString();
-
-
                 }
                 else // p sin forelder har ikke høyrebarn
                 {
                     p = p.forelder;
-                    antall--;
                     gren.removeLast();
                 }
             }
@@ -507,17 +470,19 @@ public class ObligSBinTre<T> implements Beholder<T>
             {
                 // må gå oppover i treet for å finne en forelder som er et venstrebarn
                 p = p.forelder;
-                antall--;
                 gren.removeLast();
             }
         }
 
         return grener;
     }
+
+    // Hjelpemetode
     public int antallBladnoder() {
         return rot == null ? 0 : antallBladnoder(rot);
     }
 
+    // Hjelpemetode
     private static int antallBladnoder(Node<?> p) {
         if(p.venstre == null && p.høyre == null) return 1;
 
