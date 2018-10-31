@@ -619,12 +619,16 @@ public class ObligSBinTre<T> implements Beholder<T>
             queue.clear();
             recursiveBladNodeVerdier(rot);
             // Fjerner første bladnode
-            queue.removeFirst();
+            while(p.verdi.equals(queue.peek())) {
+                queue.removeFirst();
+                break;
+            }
+
+            if(queue.isEmpty())
+                return null;
 
             verdi = queue.removeFirst().verdi;
             return verdi;
-
-
 
 
 
