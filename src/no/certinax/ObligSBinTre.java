@@ -487,7 +487,8 @@ public class ObligSBinTre<T> implements Beholder<T>
                 (p.høyre == null ? 0 : antallBladnoder(p.høyre));
     }
 
-    private static String bladNodeVerdier(Node<?> p) {
+    private ArrayDeque<String> queue = new ArrayDeque<>();
+    private void bladNodeVerdier(Node<?> p) {
         //if(p.venstre == null && p.høyre == null) return p.verdi.toString();
 
         /*if(p.venstre == null && p.høyre != null) {
@@ -501,21 +502,42 @@ public class ObligSBinTre<T> implements Beholder<T>
         } else {
             return bladNodeVerdier(p.høyre);
         }*/
+        /*ArrayDeque<String> bladVerdier = new ArrayDeque<>();
         if(p == null) return null;
 
-        if(p.venstre == null && p.høyre == null) return p.verdi.toString();
+        if(p.venstre != null) bladNodeVerdier(p.venstre);
 
-        if(p.venstre != null) return bladNodeVerdier(p.venstre);
+        else if(p.høyre != null) bladNodeVerdier(p.høyre);
 
-        if(p.høyre != null) return bladNodeVerdier(p.høyre);
+        else bladVerdier.addFirst(p.verdi.toString());
 
-        return null;
+        StringJoiner sj = new StringJoiner(", ", "[","]");
+        while(!bladVerdier.isEmpty()) {
+            sj.add(bladVerdier.removeFirst());
+        }
+        return sj.toString();*/
+        //if(p == null) return null;
+
+
+        if(p.venstre != null) bladNodeVerdier(p.venstre);
+        if(p.høyre != null) bladNodeVerdier(p.høyre);
+
+        if(p.venstre == null && p.høyre == null) queue.addFirst(p.verdi.toString());
+
     }
+
 
     public String bladnodeverdier()
     {
-        return null;
-        //return rot == null ? null : bladNodeVerdier(rot);
+
+        if(tom()) return "[]";
+        if(antall == 1) return "[" + rot.toString() + "]";
+        bladNodeVerdier(rot);
+        StringJoiner sj = new StringJoiner(", ","[","]");
+        while(!queue.isEmpty()) {
+            sj.add(queue.removeLast());
+        }
+        return sj.toString();
     }
 
     public String postString()
