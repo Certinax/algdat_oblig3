@@ -90,8 +90,8 @@ public class Main {
             //String[] s = tre.grener();
             //for (String gren : s) System.out.println(gren);
 
-
-            System.out.println(tre.bladnodeverdier());
+            System.out.println(tre.postString());
+            //System.out.println(tre.bladnodeverdier());
         }
     }
 }

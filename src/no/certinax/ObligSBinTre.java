@@ -250,7 +250,6 @@ public class ObligSBinTre<T> implements Beholder<T>
             s.add(p.verdi.toString());
             p = nesteInorden(p);
         }
-        //if (!tom()) inorden(x -> s.add(x));
 
         return s.toString();
     }
@@ -502,19 +501,81 @@ public class ObligSBinTre<T> implements Beholder<T>
         } else {
             return bladNodeVerdier(p.høyre);
         }*/
+        if(p == null) return null;
+
+        if(p.venstre == null && p.høyre == null) return p.verdi.toString();
+
+        if(p.venstre != null) return bladNodeVerdier(p.venstre);
+
+        if(p.høyre != null) return bladNodeVerdier(p.høyre);
 
         return null;
-
     }
 
     public String bladnodeverdier()
     {
-        return rot == null ? null : bladNodeVerdier(rot);
+        return null;
+        //return rot == null ? null : bladNodeVerdier(rot);
     }
 
     public String postString()
     {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        ArrayDeque<Node<T>> list = new ArrayDeque<>();
+        ArrayDeque<Node<T>> queue = new ArrayDeque<>();
+
+        Node<T> p = rot;
+        Node<T> forelder = null;
+        if(p == null) return "[]";
+        queue.addFirst(p);
+
+        while(!queue.isEmpty()) {
+            Node current = queue.peek();
+
+            if(forelder == null || forelder.venstre == current || forelder.høyre == current)
+            {
+                if(current.venstre != null)
+                {
+                    queue.addFirst(current.venstre);
+                }
+                else if (current.høyre != null)
+                {
+                    queue.addFirst(current.høyre);
+                }
+                else
+                {
+                    queue.pop();
+                    list.addFirst(current);
+                }
+            }
+            else if (current.venstre == forelder)
+            {
+                if (current.høyre != null)
+                {
+                    queue.addFirst(current.høyre);
+                }
+                else
+                {
+                    queue.pop();
+                    list.addFirst(current);
+                }
+            }
+            else if (current.høyre == forelder)
+            {
+                queue.pop();
+                list.addFirst(current);
+            }
+            forelder = current;
+        }
+
+        StringJoiner sj = new StringJoiner(", ", "[","]");
+
+        while(!list.isEmpty())
+        {
+            sj.add(list.removeLast().toString());
+        }
+
+        return sj.toString();
+
     }
 
     @Override
@@ -531,7 +592,22 @@ public class ObligSBinTre<T> implements Beholder<T>
 
         private BladnodeIterator()              // konstruktør
         {
-            throw new UnsupportedOperationException("Ikke kodet ennå!");
+
+            if(p == null) return;;
+
+            // finner node lengst til venstre (altså første inorden)
+            while (p.venstre != null) {
+                p = p.venstre;
+            }
+            // finne første bladnode
+            while (p.høyre != null) {
+                p = p.høyre;
+                while (p.venstre != null) {
+                    p = p.venstre;
+                }
+            }
+
+            removeOK = false;
         }
 
         @Override
@@ -543,7 +619,49 @@ public class ObligSBinTre<T> implements Beholder<T>
         @Override
         public T next()
         {
-            throw new UnsupportedOperationException("Ikke kodet ennå!");
+            if(iteratorendringer != endringer)
+                throw new ConcurrentModificationException("Iteratorendringer er ikke like antall endringer!");
+
+            if(!hasNext())
+                throw new NoSuchElementException("Finnes ikke flere bladnoder i treet!");
+
+            if(p == null)
+                throw new NoSuchElementException("Ikke flere igjen");
+            q = p;
+            // finne neste bladnode
+            while(p.forelder != null) {
+                if(p == p.forelder.venstre) // sjekker om bladnode er venstrebarn
+                {
+                    if(p.forelder.høyre != null) // må sjekke om det eksisterer et høyrebarn til p sin forelder
+                    {
+                        p = p.forelder;
+                        while(p.høyre != null) {
+                            p = p.høyre;
+                            while(p.venstre != null) {
+                                p = p.venstre;
+                            }
+                        }
+                        // Legger til neste gren i string-arrayet
+                            return p.verdi;
+
+                    }
+                    else // p sin forelder har ikke høyrebarn
+                    {
+                        p = p.forelder;
+                    }
+                }
+                else // p er høyrebarn
+                {
+                    // må gå oppover i treet for å finne en forelder som er et venstrebarn
+                    p = p.forelder;
+                }
+            }
+
+            //if(p == q)
+            //    throw new NoSuchElementException("Finnes ikke flere bladnoder i treet!");
+
+
+            return p.verdi;
         }
 
         @Override
