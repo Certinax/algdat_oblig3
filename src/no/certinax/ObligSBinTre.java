@@ -487,12 +487,12 @@ public class ObligSBinTre<T> implements Beholder<T>
                 (p.høyre == null ? 0 : antallBladnoder(p.høyre));
     }
 
-    private ArrayDeque<String> queue = new ArrayDeque<>();
+    private ArrayDeque<Node<T>> queue = new ArrayDeque<>();
 
-    private void recursiveBladNodeVerdier(Node<?> p) {
+    private void recursiveBladNodeVerdier(Node<T> p) {
         if(p.venstre != null) recursiveBladNodeVerdier(p.venstre);
         if(p.høyre != null) recursiveBladNodeVerdier(p.høyre);
-        if(p.venstre == null && p.høyre == null) queue.addFirst(p.verdi.toString());
+        if(p.venstre == null && p.høyre == null) queue.addFirst(p);
     }
 
 
@@ -504,7 +504,7 @@ public class ObligSBinTre<T> implements Beholder<T>
         recursiveBladNodeVerdier(rot);
         StringJoiner sj = new StringJoiner(", ","[","]");
         while(!queue.isEmpty()) {
-            sj.add(queue.removeLast());
+            sj.add(queue.removeLast().toString());
         }
         return sj.toString();
     }
@@ -580,11 +580,12 @@ public class ObligSBinTre<T> implements Beholder<T>
         private Node<T> p = rot, q = null;
         private boolean removeOK = false;
         private int iteratorendringer = endringer;
+        private ArrayDeque<Node<T>> hjelpestakk = new ArrayDeque<>();
 
         private BladnodeIterator()              // konstruktør
         {
 
-            if(p == null) return;;
+            if(p == null) return;
 
             // finner node lengst til venstre (altså første inorden)
             while (p.venstre != null) {
@@ -597,8 +598,6 @@ public class ObligSBinTre<T> implements Beholder<T>
                     p = p.venstre;
                 }
             }
-
-            removeOK = false;
         }
 
         @Override
@@ -616,10 +615,21 @@ public class ObligSBinTre<T> implements Beholder<T>
             if(!hasNext())
                 throw new NoSuchElementException("Finnes ikke flere bladnoder i treet!");
 
-            if(p == null)
-                throw new NoSuchElementException("Ikke flere igjen");
-            q = p;
-            // finne neste bladnode
+            T verdi;
+            queue.clear();
+            recursiveBladNodeVerdier(rot);
+            // Fjerner første bladnode
+            queue.removeFirst();
+
+            verdi = queue.removeFirst().verdi;
+            return verdi;
+
+
+
+
+
+
+            /*// finne neste bladnode
             while(p.forelder != null) {
                 if(p == p.forelder.venstre) // sjekker om bladnode er venstrebarn
                 {
@@ -652,7 +662,7 @@ public class ObligSBinTre<T> implements Beholder<T>
             //    throw new NoSuchElementException("Finnes ikke flere bladnoder i treet!");
 
 
-            return p.verdi;
+            return p.verdi;*/
         }
 
         @Override
