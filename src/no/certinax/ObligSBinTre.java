@@ -319,6 +319,17 @@ public class ObligSBinTre<T> implements Beholder<T>
         return s.toString();
     }
 
+    private static <T> Node<T> grenByggern(Node<T> p, ArrayDeque<Node<T>> grenBygger) {
+        while(p.høyre != null) {
+            p = p.høyre;
+            grenBygger.addFirst(p);
+            while(p.venstre != null) {
+                p = p.venstre;
+                grenBygger.addFirst(p);
+            }
+        }
+        return p;
+    }
     public String lengstGren()
     {
         if(tom()) return "[]";
@@ -344,17 +355,7 @@ public class ObligSBinTre<T> implements Beholder<T>
             lengsteGren.addFirst(p);
         }
 
-        // finne første bladnode
-        while(p.høyre != null) {
-            p = p.høyre;
-            antall++;
-            lengsteGren.addFirst(p);
-            while(p.venstre != null) {
-                p = p.venstre;
-                antall++;
-                lengsteGren.addFirst(p);
-            }
-        }
+        p = grenByggern(p, lengsteGren);
 
         // Kopiere lengsteGrenDeque over til nestelengst
         nestLengstGren = lengsteGren.clone();
@@ -368,16 +369,9 @@ public class ObligSBinTre<T> implements Beholder<T>
                     p = p.forelder;
                     antall--;
                     nestLengstGren.removeFirst();
-                    while(p.høyre != null) {
-                        p = p.høyre;
-                        antall++;
-                        nestLengstGren.addFirst(p);
-                        while(p.venstre != null) {
-                            p = p.venstre;
-                            antall++;
-                            nestLengstGren.addFirst(p);
-                        }
-                    }
+
+                    p = grenByggern(p, nestLengstGren);
+
                     // Sjekker her om nåværende gren er lengre enn den lengste
                     if(nestLengstGren.size() > lengsteGren.size()) {
                         lengsteGren = nestLengstGren.clone();
@@ -636,7 +630,26 @@ public class ObligSBinTre<T> implements Beholder<T>
         @Override
         public void remove()
         {
-            throw new UnsupportedOperationException("Ikke kodet ennå!");
+            if(!removeOK)
+                throw new IllegalStateException("Ikke lovlig tilstand!");
+            if(iteratorendringer != endringer)
+                throw new ConcurrentModificationException("Iteratorendringer er ikke lik endringer!");
+            removeOK = false;
+
+
+            if(antall == 1) {
+                rot = null;
+            } else {
+                if(q == q.forelder.venstre) {
+                    q.forelder.venstre = null;
+                } else {
+                    q.forelder.høyre = null;
+                }
+            }
+
+            antall--;
+            endringer++;
+            iteratorendringer++;
         }
     } // end class BladnodeIterator
 
