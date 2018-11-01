@@ -343,15 +343,12 @@ public class ObligSBinTre<T> implements Beholder<T>
         ArrayDeque<Node<T>> nestLengstGren = new ArrayDeque<>();
 
 
-        int antall = 0;
         Node<T> p = rot;
-        antall++;
         lengsteGren.addFirst(p);
 
         // finner node lengst til venstre (altså første inorden)
         while(p.venstre != null) {
             p = p.venstre;
-            antall++;
             lengsteGren.addFirst(p);
         }
 
@@ -367,7 +364,6 @@ public class ObligSBinTre<T> implements Beholder<T>
                 if(p.forelder.høyre != null) // må sjekke om det eksisterer et høyrebarn til p sin forelder
                 {
                     p = p.forelder;
-                    antall--;
                     nestLengstGren.removeFirst();
 
                     p = grenByggern(p, nestLengstGren);
@@ -380,7 +376,6 @@ public class ObligSBinTre<T> implements Beholder<T>
                 else // p sin forelder har ikke høyrebarn
                 {
                     p = p.forelder;
-                    antall--;
                     nestLengstGren.removeFirst();
                 }
             }
@@ -388,7 +383,6 @@ public class ObligSBinTre<T> implements Beholder<T>
             {
                 // må gå oppover i treet for å finne en forelder som er et venstrebarn
                 p = p.forelder;
-                antall--;
                 nestLengstGren.removeFirst();
             }
         }
