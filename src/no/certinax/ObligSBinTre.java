@@ -69,6 +69,7 @@ public class ObligSBinTre<T> implements Beholder<T>
         else q.høyre = p;                       // høyre barn til q
 
         antall++;                               // én verdi mer i treet
+        endringer++;                            // innlegging er en endring
         return true;                            // vellykket innlegging
     }
 
@@ -147,6 +148,7 @@ public class ObligSBinTre<T> implements Beholder<T>
         }
 
         antall--;   // det er nå én node mindre i treet
+        endringer++; // fjerne en verdi er en endring
         return true;
     }
 
@@ -201,6 +203,7 @@ public class ObligSBinTre<T> implements Beholder<T>
         if(!tom()) nullstill(rot);
         rot = null;
         antall = 0;
+        endringer++;        // nullstill er en endring
     }
 
     private void nullstill(Node<T> p) {
@@ -585,19 +588,15 @@ public class ObligSBinTre<T> implements Beholder<T>
         private BladnodeIterator()              // konstruktør
         {
 
-            if(p == null) return;
-
-            // finner node lengst til venstre (altså første inorden)
-            while (p.venstre != null) {
-                p = p.venstre;
-            }
-            // finne første bladnode
-            while (p.høyre != null) {
-                p = p.høyre;
-                while (p.venstre != null) {
-                    p = p.venstre;
+            if(rot != null) {
+                while(p.venstre != null || p.høyre != null) {
+                    if(p.venstre != null)
+                        p = p.venstre;
+                    else
+                        p = p.høyre;
                 }
             }
+
         }
 
         @Override
@@ -609,64 +608,29 @@ public class ObligSBinTre<T> implements Beholder<T>
         @Override
         public T next()
         {
-            if(iteratorendringer != endringer)
-                throw new ConcurrentModificationException("Iteratorendringer er ikke like antall endringer!");
 
             if(!hasNext())
                 throw new NoSuchElementException("Finnes ikke flere bladnoder i treet!");
 
-            T verdi;
-            queue.clear();
-            recursiveBladNodeVerdier(rot);
-            // Fjerner første bladnode
-            while(p.verdi.equals(queue.peek())) {
-                queue.removeFirst();
-                break;
+            if(iteratorendringer != endringer)
+                throw new ConcurrentModificationException("Iteratorendringer er ikke like antall endringer!");
+
+            removeOK = true;
+
+            q = p;
+
+            p = nesteInorden(p);
+
+            if(p != null) {
+                while (p.venstre != null || p.høyre != null) {
+                    p = nesteInorden(p);
+                    if(p == null)
+                        break;
+                }
+
             }
 
-            if(queue.isEmpty())
-                return null;
-
-            verdi = queue.removeFirst().verdi;
-            return verdi;
-
-
-
-
-            /*// finne neste bladnode
-            while(p.forelder != null) {
-                if(p == p.forelder.venstre) // sjekker om bladnode er venstrebarn
-                {
-                    if(p.forelder.høyre != null) // må sjekke om det eksisterer et høyrebarn til p sin forelder
-                    {
-                        p = p.forelder;
-                        while(p.høyre != null) {
-                            p = p.høyre;
-                            while(p.venstre != null) {
-                                p = p.venstre;
-                            }
-                        }
-                        // Legger til neste gren i string-arrayet
-                            return p.verdi;
-
-                    }
-                    else // p sin forelder har ikke høyrebarn
-                    {
-                        p = p.forelder;
-                    }
-                }
-                else // p er høyrebarn
-                {
-                    // må gå oppover i treet for å finne en forelder som er et venstrebarn
-                    p = p.forelder;
-                }
-            }
-
-            //if(p == q)
-            //    throw new NoSuchElementException("Finnes ikke flere bladnoder i treet!");
-
-
-            return p.verdi;*/
+            return q.verdi;
         }
 
         @Override
