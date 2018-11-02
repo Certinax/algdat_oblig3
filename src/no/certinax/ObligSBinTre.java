@@ -2,7 +2,7 @@
 ////////////////////////////////////
 ////ALGORITMER OG DATASTRUKTURER////
 ////////////////////////////////////
-///////Obligatorisk oppgave 2///////
+///////Obligatorisk oppgave 3///////
 ////////////////////////////////////
 /////////MATHIAS LUND AHRN//////////
 ////////////////////////////////////
@@ -390,8 +390,6 @@ public class ObligSBinTre<T> implements Beholder<T>
 
     public String[] grener()
     {
-
-
         // Finner antall bladnoder via hjelpemetode
         // Setter størrelsen til string tabellen vha antallet som blir returnert
         String[] grener = new String[antallBladnoder()];
@@ -569,7 +567,6 @@ public class ObligSBinTre<T> implements Beholder<T>
 
         private BladnodeIterator()              // konstruktør
         {
-
             if(rot != null) {
                 while(p.venstre != null || p.høyre != null) {
                     if(p.venstre != null)
