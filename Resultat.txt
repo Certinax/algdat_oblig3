@@ -1,0 +1,6 @@
+Resultat
+
+
+Gratulerer!! Du passerte testen!
+
+Process finished with exit code 0
