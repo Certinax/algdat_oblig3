@@ -100,6 +100,23 @@ public class ObligSBinTre<T> implements Beholder<T>
         return false;
     }
 
+    public int fjernAlle(T verdi)
+    {
+        int fjernet = 0;
+
+        while(fjern(verdi)) {
+            fjernet++;
+        }
+
+        return fjernet;
+    }
+
+    @Override
+    public int antall()
+    {
+        return antall;
+    }
+
     @Override
     public boolean fjern(T verdi)
     {
@@ -159,23 +176,6 @@ public class ObligSBinTre<T> implements Beholder<T>
         antall--;   // det er nå én node mindre i treet
         endringer++; // fjerne en verdi er en endring
         return true;
-    }
-
-    public int fjernAlle(T verdi)
-    {
-        int fjernet = 0;
-
-        while(fjern(verdi)) {
-            fjernet++;
-        }
-
-        return fjernet;
-    }
-
-    @Override
-    public int antall()
-    {
-        return antall;
     }
 
     public int antall(T verdi)
